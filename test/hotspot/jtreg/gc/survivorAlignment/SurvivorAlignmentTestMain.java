@@ -70,14 +70,21 @@ public class SurvivorAlignmentTestMain {
     private static final String PS_SURVIVOR = "PS Survivor Space";
     private static final String G1_EDEN = "G1 Eden Space";
     private static final String G1_SURVIVOR = "G1 Survivor Space";
+    private static final String JADE_EDEN = "Jade Eden Space";
+    private static final String JADE_SURVIVOR = "Jade Survivor Space";
     private static final String SERIAL_TENURED = "Tenured Gen";
     private static final String CMS_TENURED = "CMS Old Gen";
     private static final String PS_TENURED = "PS Old Gen";
     private static final String G1_TENURED = "G1 Old Gen";
+    private static final String JADE_TENURED = "Jade Old Gen";
 
     private static final long G1_HEAP_REGION_SIZE = Optional.ofNullable(
             SurvivorAlignmentTestMain.WHITE_BOX.getUintxVMFlag(
                     "G1HeapRegionSize")).orElse(-1L);
+
+    private static final long JADE_HEAP_REGION_SIZE = Optional.ofNullable(
+            SurvivorAlignmentTestMain.WHITE_BOX.getUintxVMFlag(
+                    "JadeHeapRegionSize")).orElse(-1L);
 
     /**
      * Min size of free chunk in CMS generation.
@@ -159,6 +166,14 @@ public class SurvivorAlignmentTestMain {
                             AlignmentHelper.OBJECT_ALIGNMENT_IN_BYTES,
                             AlignmentHelper.MIN_OBJECT_SIZE, pool);
                     break;
+                case SurvivorAlignmentTestMain.JADE_EDEN:
+                    Asserts.assertNull(edenHelper,
+                            "Only one bean for eden space is expected.");
+                    edenHelper = new AlignmentHelper(
+                            SurvivorAlignmentTestMain.JADE_HEAP_REGION_SIZE,
+                            AlignmentHelper.OBJECT_ALIGNMENT_IN_BYTES,
+                            AlignmentHelper.MIN_OBJECT_SIZE, pool);
+                    break;
                 case SurvivorAlignmentTestMain.DEF_NEW_SURVIVOR:
                 case SurvivorAlignmentTestMain.PAR_NEW_SURVIVOR:
                 case SurvivorAlignmentTestMain.PS_SURVIVOR:
@@ -177,9 +192,18 @@ public class SurvivorAlignmentTestMain {
                             AlignmentHelper.SURVIVOR_ALIGNMENT_IN_BYTES,
                             AlignmentHelper.MIN_OBJECT_SIZE, pool);
                     break;
+                case SurvivorAlignmentTestMain.JADE_SURVIVOR:
+                    Asserts.assertNull(survivorHelper,
+                            "Only one bean for survivor space is expected.");
+                    survivorHelper = new AlignmentHelper(
+                            SurvivorAlignmentTestMain.JADE_HEAP_REGION_SIZE,
+                            AlignmentHelper.SURVIVOR_ALIGNMENT_IN_BYTES,
+                            AlignmentHelper.MIN_OBJECT_SIZE, pool);
+                    break;
                 case SurvivorAlignmentTestMain.SERIAL_TENURED:
                 case SurvivorAlignmentTestMain.PS_TENURED:
                 case SurvivorAlignmentTestMain.G1_TENURED:
+                case SurvivorAlignmentTestMain.JADE_TENURED:
                     Asserts.assertNull(tenuredHelper,
                             "Only one bean for tenured space is expected.");
                     tenuredHelper = new AlignmentHelper(

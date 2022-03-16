@@ -203,6 +203,50 @@ public class WhiteBox {
    */
   public native long[] g1GetMixedGCInfo(int liveness);
 
+  // Jade
+  public native boolean jadeInConcurrentMark();
+  private native boolean jadeIsHumongous0(Object o);
+  public         boolean jadeIsHumongous(Object o) {
+    Objects.requireNonNull(o);
+    return jadeIsHumongous0(o);
+  }
+
+  private native boolean jadeBelongsToHumongousRegion0(long adr);
+  public         boolean jadeBelongsToHumongousRegion(long adr) {
+    if (adr == 0) {
+      throw new IllegalArgumentException("adr argument should not be null");
+    }
+    return jadeBelongsToHumongousRegion0(adr);
+  }
+
+
+  private native boolean jadeBelongsToFreeRegion0(long adr);
+  public         boolean jadeBelongsToFreeRegion(long adr) {
+    if (adr == 0) {
+      throw new IllegalArgumentException("adr argument should not be null");
+    }
+    return jadeBelongsToFreeRegion0(adr);
+  }
+
+  public native long    jadeNumMaxRegions();
+  public native long    jadeNumFreeRegions();
+  public native int     jadeRegionSize();
+  public native MemoryUsage jadeAuxiliaryMemoryUsage();
+
+  /**
+   * Enumerates old regions with liveness less than specified and produces some statistics
+   * @param liveness percent of region's liveness (live_objects / total_region_size * 100).
+   * @return long[3] array where long[0] - total count of old regions
+   *                             long[1] - total memory of old regions
+   *                             long[2] - lowest estimation of total memory of old regions to be freed (non-full
+   *                             regions are not included)
+   */
+  public native long[] jadeGetMixedGCInfo(int liveness);
+
+  // Method tries to start concurrent mark cycle.
+  // It returns false if CM Thread is always in concurrent cycle.
+  public native boolean jadeStartConcMarkCycle();
+
   // NMT
   public native long NMTMalloc(long size);
   public native void NMTFree(long mem);
