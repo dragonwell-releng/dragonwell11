@@ -39,7 +39,8 @@ public enum GC {
     G1(4),
     Epsilon(5),
     Z(6),
-    Shenandoah(7);
+    Shenandoah(7),
+    Jade(8);
 
     private static final WhiteBox WB = WhiteBox.getWhiteBox();
 
