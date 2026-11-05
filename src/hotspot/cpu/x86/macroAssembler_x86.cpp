@@ -6007,6 +6007,7 @@ void MacroAssembler::load_nklass_compact(Register dst, Register src) {
   shrq(dst, markOopDesc::klass_shift);
 }
 
+#ifdef COMPILER2
 void MacroAssembler::load_nklass_compact_c2(Register dst, Register obj, Register index, Address::ScaleFactor scale, int disp) {
   C2LoadNKlassStub* stub = new (Compile::current()->comp_arena()) C2LoadNKlassStub(dst);
   Compile::current()->add_stub(stub);
@@ -6026,6 +6027,7 @@ void MacroAssembler::load_nklass_compact_c2(Register dst, Register obj, Register
   bind(stub->continuation());
   shrq(dst, markOopDesc::klass_shift);
 }
+#endif // COMPILER2
 #endif
 
 void MacroAssembler::load_klass(Register dst, Register src, Register tmp) {

@@ -322,7 +322,9 @@ class MacroAssembler: public Assembler {
   void load_klass(Register dst, Register src, Register tmp);
 #ifdef _LP64
   void load_nklass_compact(Register dst, Register src);
+#ifdef COMPILER2
   void load_nklass_compact_c2(Register dst, Register obj, Register index, Address::ScaleFactor scale, int disp);
+#endif
 #endif
   void store_klass(Register dst, Register src, Register tmp);
 
